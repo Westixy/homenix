@@ -2,8 +2,18 @@
 # your system. Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, lib, ... }:
 
+let
+  # Dynamic funny MOTD: a random fortune told by a random cow, rainbow-colored.
+  funMotd = pkgs.writeShellScriptBin "fun-motd" ''
+    set -u
+    export PATH="${lib.makeBinPath [ pkgs.fortune pkgs.cowsay pkgs.lolcat pkgs.coreutils pkgs.gnused ]}:$PATH"
+    cow=$(cowsay -l 2>/dev/null | sed '/^[[:space:]]*$/d' | shuf -n1)
+    [ -z "$cow" ] && cow="default"
+    fortune -s | cowsay -f "$cow" | lolcat
+  '';
+in
 {
   imports =
     [
@@ -45,11 +55,35 @@
     pulse.enable = true;
   };
 
+  # Zsh as the default shell, with autosuggestions and syntax highlighting.
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
+    interactiveShellInit = ''
+      # Dynamic funny MOTD — shown once per terminal (not in nested shells/panes).
+      if [[ -z "''${_ZSH_FUN_MOTD_SHOWN:-}" ]]; then
+        export _ZSH_FUN_MOTD_SHOWN=1
+        if [[ $TERM != "dumb" ]]; then
+          ${funMotd}/bin/fun-motd
+        fi
+      fi
+    '';
+  };
+
+  # Fancy cross-shell prompt (uses Nerd Font icons).
+  programs.starship = {
+    enable = true;
+    presets = [ "nerd-font-symbols" ];
+  };
+
   # Define a user account. Don't forget to set a password with `passwd`.
   users.users.westixy = {
     isNormalUser = true;
     description = "westixy";
     extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.zsh;
   };
 
   # Allow unfree packages.
@@ -69,6 +103,11 @@
     curl
     git
     discord
+    zellij
+    funMotd
+    fortune
+    cowsay
+    lolcat
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
