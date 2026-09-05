@@ -56,6 +56,13 @@ in
   # Steam (also enables 32-bit graphics, steam-hardware, and firewall rules).
   programs.steam.enable = true;
 
+  # Ollama — local LLM server. Vulkan backend so it uses the NVIDIA GPU:
+  # nixpkgs' CUDA build targets sm_75+ only, which excludes this Pascal card.
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-vulkan;
+  };
+
   # Enable sound with PipeWire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
