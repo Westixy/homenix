@@ -32,6 +32,9 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
+  # Steam (also enables 32-bit graphics, steam-hardware, and firewall rules).
+  programs.steam.enable = true;
+
   # Enable sound with PipeWire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -52,11 +55,20 @@
   # Allow unfree packages.
   nixpkgs.config.allowUnfree = true;
 
+  # Nerd fonts (icon-patched coding/terminal fonts).
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
+    nerd-fonts.hack
+    nerd-fonts.noto
+  ];
+
   # List packages installed in the system profile.
   environment.systemPackages = with pkgs; [
     neovim
     curl
     git
+    discord
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
