@@ -72,10 +72,11 @@ in
     '';
   };
 
-  # Fancy cross-shell prompt (uses Nerd Font icons).
+  # Fancy Matrix/DevOps prompt (uses Nerd Font icons).
   programs.starship = {
     enable = true;
     presets = [ "nerd-font-symbols" ];
+    settings = builtins.fromTOML (builtins.readFile ./starship.toml);
   };
 
   # Define a user account. Don't forget to set a password with `passwd`.

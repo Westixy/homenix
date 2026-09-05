@@ -1,0 +1,118 @@
+# Matrix / DevOps inspired Starship theme.
+# Primary color is matrix green (#00ff41), with cyan/magenta/yellow accents
+# for the DevOps modules. Symbols come from the nerd-font-symbols preset.
+
+format = '$os$username$hostname$directory$git_branch$git_state$git_status$kubernetes$docker_context$aws$gcloud$terraform$nix_shell$package$python$nodejs$golang$rust$cmd_duration$line_break$character'
+
+right_format = '$time$status'
+
+add_newline = true
+
+# Prompt character.
+[character]
+success_symbol = '[➜](bold #00ff41)'
+error_symbol = '[✗](bold red)'
+vimcmd_symbol = '[❮](bold cyan)'
+
+# OS symbol (NixOS snowflake).
+[os]
+disabled = false
+format = '[$symbol]($style) '
+style = 'bold #00ff41'
+
+[username]
+style_user = 'bold green'
+style_root = 'bold red'
+format = '[$user]($style)@'
+show_always = false
+
+[hostname]
+ssh_only = false
+format = '[$hostname]($style) '
+style = 'bold green'
+
+[directory]
+style = 'bold cyan'
+format = '[$path]($style)[$read_only]($read_only_style) '
+read_only_style = 'bold red'
+truncation_length = 4
+truncation_symbol = '…/'
+
+# Git.
+[git_branch]
+format = '[$symbol$branch]($style) '
+style = 'bold green'
+
+[git_state]
+format = '([$state( $progress_current/$progress_total)]($style) )'
+style = 'bold yellow'
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = 'bold green'
+
+# DevOps / cloud.
+[kubernetes]
+disabled = false
+format = '[$symbol$context\($namespace\)]($style) '
+style = 'bold cyan'
+
+[docker_context]
+format = '[$symbol$context]($style) '
+style = 'bold blue'
+only_with_files = true
+
+[aws]
+format = '[$symbol$profile(\($region\))]($style) '
+style = 'bold yellow'
+
+[gcloud]
+format = '[$symbol$project(\($region\))]($style) '
+style = 'bold blue'
+
+[terraform]
+format = '[$symbol$workspace]($style) '
+style = 'bold purple'
+
+[nix_shell]
+format = '[$symbol$name]($style) '
+style = 'bold cyan'
+
+# Language runtimes.
+[package]
+format = '[$symbol$version]($style) '
+style = 'bold green'
+
+[python]
+format = '[$symbol$version]($style) '
+style = 'bold yellow'
+
+[nodejs]
+format = '[$symbol$version]($style) '
+style = 'bold green'
+
+[golang]
+format = '[$symbol$version]($style) '
+style = 'bold cyan'
+
+[rust]
+format = '[$symbol$version]($style) '
+style = 'bold red'
+
+# Timing and exit status.
+[cmd_duration]
+min_time = 1000
+format = '[ $duration]($style) '
+style = 'bold yellow'
+
+[status]
+format = '[$symbol$status]($style) '
+symbol = '✗ '
+style = 'bold red'
+
+# Clock (right prompt).
+[time]
+disabled = false
+format = '[· $time]($style) '
+time_format = '%H:%M:%S'
+style = 'bold #008f11'
