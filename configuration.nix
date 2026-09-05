@@ -116,6 +116,7 @@ in
     git
     discord
     zellij
+    vscodium
     funMotd
     fortune
     cowsay
