@@ -256,6 +256,7 @@ in
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
     nh
     genmgr
+    inkscape
   ];
 
   # This value determines the NixOS release from which the default
