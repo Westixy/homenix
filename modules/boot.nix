@@ -43,8 +43,9 @@ in
     };
   };
 
-  # NTFS read/write support (ntfs-3g via FUSE).
-  boot.supportedFilesystems = [ "ntfs" ];
+  # Filesystems made available in the initrd and for mounting at boot.
+  # NTFS uses ntfs-3g via FUSE; Btrfs is available for snapshots/compression.
+  boot.supportedFilesystems = [ "ntfs" "btrfs" ];
 
   # Gohu 8x14 bitmap font on the virtual consoles (TTYs), matching the Limine
   # boot menu. gohufont ships ready-made PSF console fonts, so we point

@@ -27,6 +27,7 @@ in
     nh
     genmgr
     inkscape
+    parted
     disktui
     alacritty
     vlc
