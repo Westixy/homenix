@@ -45,7 +45,7 @@ in
     '';
     additionalFiles."gohu-14.raw" = gohuLimineFont;
     style = {
-      wallpapers = [ pkgs.nixos-artwork.wallpapers.binary-blue.gnomeFilePath ];
+      wallpapers = [ pkgs.nixos-artwork.wallpapers.nineish-dark-gray.gnomeFilePath ];
       wallpaperStyle = "centered";
       interface = {
         branding = "NixOS";
@@ -122,6 +122,7 @@ in
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
     interactiveShellInit = ''
+      export NH_OS_FLAKE="$HOME/nixos"
       # Dynamic funny MOTD — shown once per terminal (not in nested shells/panes).
       if [[ -z "''${_ZSH_FUN_MOTD_SHOWN:-}" ]]; then
         export _ZSH_FUN_MOTD_SHOWN=1
