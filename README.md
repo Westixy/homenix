@@ -29,7 +29,8 @@ setup for a gaming + local-AI desktop running the COSMIC environment.
 .
 ├── flake.nix                # Flake entry: nixosConfigurations.auberge
 ├── flake.lock               # Pinned input versions
-├── configuration.nix        # Main system configuration
+├── configuration.nix        # Top-level glue: imports modules + core settings
+├── modules/                 # Per-area config modules (boot, desktop, hardware, …)
 ├── hardware-configuration.nix # Generated hardware config (disks, kernel modules)
 ├── genmgr.sh                # Build + switch + commit helper (installed as `genmgr`)
 ├── gohu-to-limine.py        # Converts the Gohu BDF font to Limine's raw CP437 format
@@ -85,7 +86,7 @@ Environment variables you can override:
 | `FLAKE_PATH` | `$NH_OS_FLAKE` → `~/nixos` | Path to the config flake |
 | `HOST` | `$(hostname)` | Hostname in `nixosConfigurations` |
 
-> `NH_OS_FLAKE` is exported to `$HOME/nixos` in `configuration.nix`.
+> `NH_OS_FLAKE` is exported to `$HOME/nixos` in `modules/shell.nix`.
 
 ### Wallpaper
 
@@ -93,7 +94,7 @@ The desktop and lock-screen wallpaper are both set to the same `nineish-dark-gra
 image used on the Limine boot menu. It is applied by a declarative
 `cosmic-wallpaper` systemd user service on every login (both surfaces read the
 same `com.system76.CosmicBackground` COSMIC config). To change it, edit the
-`wallpaperPath` / `cosmicWallpaperEntry` bindings in `configuration.nix`; if you'd
+`wallpaperPath` / `cosmicWallpaperEntry` bindings in `modules/desktop.nix`; if you'd
 rather manage the wallpaper interactively from COSMIC Settings, delete the
 `systemd.user.services.cosmic-wallpaper` block.
 

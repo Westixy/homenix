@@ -24,7 +24,19 @@ any changes so a new task can start fast without re-deriving the environment.
 .
 ├── flake.nix                  # inputs + nixosConfigurations.auberge
 ├── flake.lock                 # pinned input versions (commit on input changes)
-├── configuration.nix          # the whole system config (everything lives here)
+├── configuration.nix          # top-level glue: imports modules + core settings
+├── modules/                   # per-area config (see the list below)
+│   ├── boot.nix               # Limine bootloader, console font, NTFS
+│   ├── system.nix             # hostname, NetworkManager, time zone, locale
+│   ├── desktop.nix            # COSMIC desktop + greeter + wallpaper
+│   ├── hardware.nix           # NVIDIA GPU, CUPS printing
+│   ├── audio.nix              # PipeWire sound
+│   ├── ollama.nix             # Ollama (local LLM server)
+│   ├── gaming.nix             # Steam
+│   ├── shell.nix              # Zsh, Starship, MOTD
+│   ├── users.nix              # user account + sudo
+│   ├── packages.nix           # system packages + fonts + genmgr
+│   └── alacritty.nix          # Alacritty terminal (Nord theme)
 ├── hardware-configuration.nix # GENERATED — do not hand-edit
 ├── genmgr.sh                  # build + switch + commit helper (installed as `genmgr`)
 ├── gohu-to-limine.py          # converts Gohu BDF -> Limine raw CP437 font
@@ -60,15 +72,19 @@ nix eval .#nixosConfigurations.auberge.config.system.stateVersion
 sudo -n true
 ```
 
-> `NH_OS_FLAKE` is exported to `$HOME/nixos` in `configuration.nix`, so `nh`
+> `NH_OS_FLAKE` is exported to `$HOME/nixos` in `modules/shell.nix`, so `nh`
 > and `genmgr` know the flake path. `genmgr` env overrides: `FLAKE_PATH`,
 > `HOST` (defaults to `$(hostname)`).
 
 
 ## Configuration conventions
 
-- `configuration.nix` signature is `{ config, pkgs, inputs, lib, ... }:` and has
-  a `let ... in` block at the top for derived values.
+- `configuration.nix` is the top-level glue: it imports
+  `./hardware-configuration.nix` and the per-area modules in `./modules/`, plus
+  core settings (`nix.settings`, `nixpkgs.config.allowUnfree`,
+  `system.stateVersion`). Each module in `modules/` declares its own
+  `let ... in` block for derived values and only the `{ ... }` args it needs
+  (e.g. `{ config, pkgs, lib, ... }` or `{ pkgs, inputs, ... }`).
 - `inputs` is passed via `specialArgs` in `flake.nix` — that's how
   `inputs.zen-browser` is referenced (Zen Browser is not in nixpkgs anymore).
 - Helper scripts use `pkgs.writeShellScriptBin`, then get added to
@@ -76,7 +92,7 @@ sudo -n true
 - Paths referenced inside scripts should be interpolated with `${...}` so they
   resolve to store paths at build time; use `${lib.makeBinPath [...]}` for PATH.
 - Single source of truth for repeated values is a `let` binding (e.g.
-  `wallpaperPath`, `cosmicWallpaperEntry`).
+  `wallpaperPath`, `cosmicWallpaperEntry` in `modules/desktop.nix`).
 - `hardware-configuration.nix` is generated. If hardware changes, regenerate:
   `sudo nixos-generate-config --show-hardware-config > hardware-configuration.nix`.
 
@@ -110,7 +126,7 @@ sudo -n true
    Desktop **and** lock screen share the same `com.system76.CosmicBackground`
    entity — the lock screen reads the "state" copy that `cosmic-bg` syncs from
    the `all` entry. To change the wallpaper, edit `wallpaperPath` /
-   `cosmicWallpaperEntry` in `configuration.nix`.
+   `cosmicWallpaperEntry` in `modules/desktop.nix`.
 
 2. **Use a stable `/etc` path for the wallpaper**, not a `/nix/store` path — a
    store path would break after `nix-collect-garbage`. Currently
@@ -145,8 +161,8 @@ Paste something like this into a fresh chat:
 
 ## Change checklist for agents
 
-1. Read `AGENTS.md` + `configuration.nix` + `flake.nix`.
-2. Make surgical edits to `configuration.nix` (or `genmgr.sh`, `starship.toml`, etc.).
+1. Read `AGENTS.md` + `configuration.nix` + `flake.nix` + the relevant `modules/*.nix`.
+2. Make surgical edits to the relevant `modules/*.nix` (or `genmgr.sh`, `starship.toml`, etc.).
 3. Validate with the `nix build --no-link ...` dry-run.
 4. If you touched `flake.lock` or inputs, mention it.
 5. Report the switch command for the user: `genmgr --note "<note>"` to switch and
