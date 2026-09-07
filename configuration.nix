@@ -30,6 +30,7 @@
     ./modules/users.nix
     ./modules/packages.nix
     ./modules/alacritty.nix
+    ./modules/mounts.nix
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
