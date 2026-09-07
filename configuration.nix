@@ -26,6 +26,9 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # NTFS read/write support (ntfs-3g via FUSE).
+  boot.supportedFilesystems = [ "ntfs" ];
+
   networking.hostName = "nixos"; # Change this to your preferred hostname.
   networking.networkmanager.enable = true;
 
@@ -126,6 +129,7 @@ in
     neovim
     curl
     git
+    git-lfs
     discord
     zellij
     vscodium
