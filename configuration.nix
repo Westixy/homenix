@@ -117,6 +117,13 @@ in
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
+  # Gohu 8x14 bitmap font on the virtual consoles (TTYs), matching the Limine
+  # boot menu. gohufont ships ready-made PSF console fonts, so we point
+  # console.font straight at the regular 8x14 PSF file. Apply it in the initrd
+  # too so early boot messages also render in Gohu.
+  console.font = "${pkgs.gohufont}/share/consolefonts/gohufont-14.psf";
+  console.earlySetup = true;
+
   # COSMIC desktop environment (Wayland-native).
   services.desktopManager.cosmic.enable = true;
   services.displayManager.cosmic-greeter.enable = true;
