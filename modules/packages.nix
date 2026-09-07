@@ -31,5 +31,6 @@ in
     disktui
     alacritty
     vlc
+    nemo-with-extensions
   ];
 }
