@@ -13,6 +13,15 @@ let
     [ -z "$cow" ] && cow="default"
     fortune -s | cowsay -f "$cow" | lolcat
   '';
+
+  # Gohu 8x14 bitmap font, converted to Limine's raw CP437 format.
+  gohuLimineFont = pkgs.runCommand "gohu-limine-font"
+    {
+      nativeBuildInputs = [ pkgs.python3 ];
+    } ''
+    ${pkgs.python3}/bin/python3 ${./gohu-to-limine.py} \
+      ${pkgs.gohufont.src}/gohufont-14.bdf $out
+  '';
 in
 {
   imports =
@@ -22,9 +31,34 @@ in
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+  # Bootloader: Limine (UEFI), Gohu font, binary-black wallpaper.
+  boot.loader.systemd-boot.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.timeout = 30;
+  boot.loader.limine = {
+    enable = true;
+    # Custom Gohu 8x14 font (Limine has no `term_font` option, so inject it
+    # via extraConfig and ship the file via additionalFiles).
+    extraConfig = ''
+      term_font: boot():/limine/gohu-14.raw
+      term_font_size: 8x14
+    '';
+    additionalFiles."gohu-14.raw" = gohuLimineFont;
+    style = {
+      wallpapers = [ pkgs.nixos-artwork.wallpapers.binary-black.gnomeFilePath ];
+      wallpaperStyle = "stretched";
+      interface = {
+        branding = "NixOS";
+        brandingColor = "89B4FA"; # Catppuccin blue
+      };
+      graphicalTerminal = {
+        font.scale = "2x2";
+        foreground = "CDD6F4"; # Catppuccin text
+        palette = "1E1E2E;F38BA8;A6E3A1;F9E2AF;89B4FA;CBA6F7;94E2D5;6C7086";
+        brightPalette = "313244;F38BA8;A6E3A1;F9E2AF;89B4FA;CBA6F7;94E2D5;CDD6F4";
+      };
+    };
+  };
 
   # NTFS read/write support (ntfs-3g via FUSE).
   boot.supportedFilesystems = [ "ntfs" ];
