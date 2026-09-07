@@ -32,10 +32,6 @@
     foreground = "CellBackground"
     background = "#88c0d0"
 
-    [colors.search.bar]
-    background = "#434c5e"
-    foreground = "#d8dee9"
-
     [colors.normal]
     black = "#3b4252"
     red = "#bf616a"
