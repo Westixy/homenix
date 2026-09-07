@@ -79,6 +79,9 @@ in
   boot.loader.timeout = 30;
   boot.loader.limine = {
     enable = true;
+    # Keep only the latest 10 generations in the boot menu. Old boot files
+    # (kernel/initrd) are pruned from the ESP automatically at every switch.
+    maxGenerations = 10;
     # Custom Gohu 8x14 font (Limine has no `term_font` option, so inject it
     # via extraConfig and ship the file via additionalFiles).
     extraConfig = ''
