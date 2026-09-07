@@ -234,6 +234,10 @@ in
     # Nord color scheme for Alacritty.
     # https://www.nordtheme.com/ports/alacritty
 
+    # Semi-transparent background (0.0 = fully transparent, 1.0 = opaque).
+    [window]
+    opacity = 0.9
+
     [colors.primary]
     background = "#2e3440"
     foreground = "#d8dee9"
@@ -254,10 +258,6 @@ in
     [colors.search.matches]
     foreground = "CellBackground"
     background = "#88c0d0"
-
-    [colors.search.bar]
-    background = "#434c5e"
-    foreground = "#d8dee9"
 
     [colors.normal]
     black = "#3b4252"
