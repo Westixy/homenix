@@ -86,8 +86,8 @@ done
 FLAKE_PATH="${FLAKE_PATH:-${NH_OS_FLAKE:-$HOME/nixos}}"
 
 # Hostname selects the matching nixosConfigurations entry in flake.nix.
-# Our flake only defines nixosConfigurations.nixos, and configuration.nix
-# sets networking.hostName = "nixos", so this resolves to the same value.
+# Our flake only defines nixosConfigurations.auberge, and configuration.nix
+# sets networking.hostName = "auberge", so this resolves to the same value.
 HOST="${HOST:-$(hostname)}"
 
 # Work inside the config repo so git operates on the right tree no matter
@@ -132,8 +132,8 @@ if [ -z "$current_gen" ]; then
 fi
 
 # Compose commit message:
-# Example: "nixos: gen 16 at 2026-09-07 10:43:03 - <optional note>"
-commit_msg="nixos: $current_gen"
+# Example: "auberge: gen 16 at 2026-09-07 10:43:03 - <optional note>"
+commit_msg="auberge: $current_gen"
 if [ -n "$NOTE" ]; then
   commit_msg="$commit_msg - $NOTE"
 fi

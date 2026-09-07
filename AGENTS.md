@@ -7,9 +7,9 @@ any changes so a new task can start fast without re-deriving the environment.
 
 | | |
 | --- | --- |
-| **What this is** | NixOS flake config for `westixy`'s desktop (gaming + local AI), hostname `nixos` |
+| **What this is** | NixOS flake config for `westixy`'s desktop (gaming + local AI), hostname `auberge` |
 | **NixOS release** | 26.05 (`nixos-26.05`), `x86_64-linux` |
-| **Repo path** | `~/nixos` (flake `nixosConfigurations.nixos`) |
+| **Repo path** | `~/nixos` (flake `nixosConfigurations.auberge`) |
 | **Git** | remote `git@github.com:Westixy/homenix.git`, branch `master` |
 | **User** | `westixy` (groups: `wheel`, `networkmanager`), shell `zsh` |
 | **Desktop** | COSMIC + `cosmic-greeter` (Wayland) |
@@ -22,7 +22,7 @@ any changes so a new task can start fast without re-deriving the environment.
 
 ```
 .
-├── flake.nix                  # inputs + nixosConfigurations.nixos
+├── flake.nix                  # inputs + nixosConfigurations.auberge
 ├── flake.lock                 # pinned input versions (commit on input changes)
 ├── configuration.nix          # the whole system config (everything lives here)
 ├── hardware-configuration.nix # GENERATED — do not hand-edit
@@ -42,7 +42,7 @@ nh os switch ~/nixos
 # Build + switch + git-commit the changes (the normal workflow)
 genmgr
 #   - prompts for an optional commit note (interactive/TTY only)
-#   - commit message: "nixos: gen <N> at <timestamp> - <note>"
+#   - commit message: "auberge: gen <N> at <timestamp> - <note>"
 
 # Agent-friendly genmgr variants:
 genmgr --build-only                 # validate the config builds (no switch, no commit)
@@ -51,10 +51,10 @@ genmgr --no-commit                  # switch without committing
 genmgr --help                       # full usage
 
 # Lower-level dry-run (equivalent to `genmgr --build-only`)
-nix build --no-link .#nixosConfigurations.nixos.config.system.build.toplevel
+nix build --no-link .#nixosConfigurations.auberge.config.system.build.toplevel
 
 # Evaluate a single option to check a value
-nix eval .#nixosConfigurations.nixos.config.system.stateVersion
+nix eval .#nixosConfigurations.auberge.config.system.stateVersion
 
 # Verify passwordless sudo is working
 sudo -n true
@@ -84,7 +84,7 @@ sudo -n true
 
 - **Boot**: Limine, custom Gohu font (`term_font: boot():/limine/gohu-14.raw`),
   `nineish-dark-gray` wallpaper, Catppuccin palette.
-- **Networking**: NetworkManager, `hostName = "nixos"`.
+- **Networking**: NetworkManager, `hostName = "auberge"`.
 - **GPU**: NVIDIA `legacy_580` branch, closed modules (`open = false`),
   modesetting enabled (required for Wayland/COSMIC).
 - **Ollama**: `ollama-vulkan` (Vulkan backend — the nixpkgs CUDA build targets
@@ -116,8 +116,8 @@ sudo -n true
    store path would break after `nix-collect-garbage`. Currently
    `/etc/wallpapers/nineish-dark-gray.png` (via `environment.etc`).
 
-3. **Hostname consistency**: `hostName = "nixos"` must match the
-   `nixosConfigurations.nixos` key in `flake.nix` and `genmgr`'s `HOST` default.
+3. **Hostname consistency**: `hostName = "auberge"` must match the
+   `nixosConfigurations.auberge` key in `flake.nix` and `genmgr`'s `HOST` default.
    If you rename the host, update all three.
 
 4. **Passwordless sudo** is active. A *fresh* machine's first switch still needs

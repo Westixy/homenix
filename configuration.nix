@@ -108,7 +108,7 @@ in
   # NTFS read/write support (ntfs-3g via FUSE).
   boot.supportedFilesystems = [ "ntfs" ];
 
-  networking.hostName = "nixos"; # Change this to your preferred hostname.
+  networking.hostName = "auberge"; # Change this to your preferred hostname.
   networking.networkmanager.enable = true;
 
   # Set your time zone.

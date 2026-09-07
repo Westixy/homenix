@@ -3,7 +3,7 @@
 NixOS configuration for **westixy's machine** — a flake-based, declarative
 setup for a gaming + local-AI desktop running the COSMIC environment.
 
-> Flake: `nixpkgs` on `nixos-26.05`, host `nixos` (`x86_64-linux`).
+> Flake: `nixpkgs` on `nixos-26.05`, host `auberge` (`x86_64-linux`).
 
 ## What's configured
 
@@ -27,7 +27,7 @@ setup for a gaming + local-AI desktop running the COSMIC environment.
 
 ```
 .
-├── flake.nix                # Flake entry: nixosConfigurations.nixos
+├── flake.nix                # Flake entry: nixosConfigurations.auberge
 ├── flake.lock               # Pinned input versions
 ├── configuration.nix        # Main system configuration
 ├── hardware-configuration.nix # Generated hardware config (disks, kernel modules)
@@ -41,7 +41,7 @@ setup for a gaming + local-AI desktop running the COSMIC environment.
 
 ### Build & switch
 
-The repo lives in `~/nixos`, and the flake exposes `nixosConfigurations.nixos`:
+The repo lives in `~/nixos`, and the flake exposes `nixosConfigurations.auberge`:
 
 ```sh
 nh os switch ~/nixos
@@ -60,7 +60,7 @@ By default (and only when run interactively) it prompts for an optional commit
 note, then switches and commits with a message like:
 
 ```
-nixos: gen 16 at 2026-09-07 10:43:03 - <note>
+auberge: gen 16 at 2026-09-07 10:43:03 - <note>
 ```
 
 For non-interactive/agent use, pass flags instead of relying on the prompt:
@@ -106,5 +106,5 @@ After cloning to `~/nixos` on a fresh machine:
 sudo nixos-generate-config --show-hardware-config > hardware-configuration.nix
 
 # Build and switch into the configuration
-sudo nixos-rebuild switch --flake ~/nixos#nixos
+sudo nixos-rebuild switch --flake ~/nixos#auberge
 ```
