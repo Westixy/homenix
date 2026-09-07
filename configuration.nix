@@ -45,14 +45,14 @@ in
     '';
     additionalFiles."gohu-14.raw" = gohuLimineFont;
     style = {
-      wallpapers = [ pkgs.nixos-artwork.wallpapers.binary-black.gnomeFilePath ];
-      wallpaperStyle = "stretched";
+      wallpapers = [ pkgs.nixos-artwork.wallpapers.binary-blue.gnomeFilePath ];
+      wallpaperStyle = "centered";
       interface = {
         branding = "NixOS";
         brandingColor = "89B4FA"; # Catppuccin blue
       };
       graphicalTerminal = {
-        font.scale = "2x2";
+        font.scale = "1x1";
         foreground = "CDD6F4"; # Catppuccin text
         palette = "1E1E2E;F38BA8;A6E3A1;F9E2AF;89B4FA;CBA6F7;94E2D5;6C7086";
         brightPalette = "313244;F38BA8;A6E3A1;F9E2AF;89B4FA;CBA6F7;94E2D5;CDD6F4";
@@ -156,6 +156,7 @@ in
     nerd-fonts.fira-code
     nerd-fonts.hack
     nerd-fonts.noto
+    nerd-fonts.gohufont
   ];
 
   # List packages installed in the system profile.
@@ -172,6 +173,7 @@ in
     cowsay
     lolcat
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+    nh
   ];
 
   # This value determines the NixOS release from which the default
