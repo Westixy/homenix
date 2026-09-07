@@ -22,6 +22,9 @@ let
     ${pkgs.python3}/bin/python3 ${./gohu-to-limine.py} \
       ${pkgs.gohufont.src}/gohufont-14.bdf $out
   '';
+
+  # Helper that rebuilds + switches via nh, then commits the config repo.
+  genmgr = pkgs.writeShellScriptBin "genmgr" (builtins.readFile ./genmgr.sh);
 in
 {
   imports =
@@ -175,6 +178,7 @@ in
     lolcat
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
     nh
+    genmgr
   ];
 
   # This value determines the NixOS release from which the default
