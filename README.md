@@ -11,6 +11,7 @@ setup for a gaming + local-AI desktop running the COSMIC environment.
 | --- | --- |
 | **Bootloader** | Limine (UEFI) with a custom [Gohu 8x14](https://fontlibrary.org/en/font/gohufont) bitmap font, the `nineish-dark-gray` wallpaper, and a Catppuccin-themed boot menu |
 | **Desktop** | COSMIC (Wayland-native) with the COSMIC greeter |
+| **Wallpaper** | The `nineish-dark-gray` artwork (same as the boot menu) on both the desktop and lock screen, applied declaratively on login |
 | **GPU** | NVIDIA GeForce GTX 1070 Ti (Pascal), `legacy_580` branch, modesetting for Wayland |
 | **Local AI** | [Ollama](https://ollama.com) with the Vulkan backend (`ollama-vulkan`) and an 8192-token context window |
 | **Gaming** | Steam (plus its 32-bit graphics, hardware, and firewall rules) |
@@ -20,6 +21,7 @@ setup for a gaming + local-AI desktop running the COSMIC environment.
 | **Fonts** | Nerd Fonts (JetBrains Mono, Fira Code, Hack, Noto, Gohu) |
 | **Browser** | [Zen Browser](https://zen-browser.app) via its community flake |
 | **Misc** | NTFS read/write, CUPS printing, `git-lfs`, `nh` |
+| **Sudo** | `westixy` runs `sudo` without a password (`NOPASSWD: ALL`) |
 
 ## Repository layout
 
@@ -69,6 +71,16 @@ Environment variables you can override:
 | `HOST` | `$(hostname)` | Hostname in `nixosConfigurations` |
 
 > `NH_OS_FLAKE` is exported to `$HOME/nixos` in `configuration.nix`.
+
+### Wallpaper
+
+The desktop and lock-screen wallpaper are both set to the same `nineish-dark-gray`
+image used on the Limine boot menu. It is applied by a declarative
+`cosmic-wallpaper` systemd user service on every login (both surfaces read the
+same `com.system76.CosmicBackground` COSMIC config). To change it, edit the
+`wallpaperPath` / `cosmicWallpaperEntry` bindings in `configuration.nix`; if you'd
+rather manage the wallpaper interactively from COSMIC Settings, delete the
+`systemd.user.services.cosmic-wallpaper` block.
 
 ## First-time setup
 
