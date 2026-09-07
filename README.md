@@ -56,11 +56,26 @@ commits the config changes to git:
 genmgr
 ```
 
-It will prompt for an optional commit note (only when run interactively) and
-produce a commit like:
+By default (and only when run interactively) it prompts for an optional commit
+note, then switches and commits with a message like:
 
 ```
 nixos: gen 16 at 2026-09-07 10:43:03 - <note>
+```
+
+For non-interactive/agent use, pass flags instead of relying on the prompt:
+
+| Flag | Purpose |
+| --- | --- |
+| `-n, --note NOTE` | Supply the commit note non-interactively |
+| `-b, --build-only` | Build the toplevel only — no switch, no commit (validate) |
+| `--no-commit` | Switch but skip the git commit |
+| `-h, --help` | Show usage |
+
+```sh
+genmgr --build-only                 # validate the config builds
+genmgr --note "add foo"             # switch + commit with a note
+genmgr --no-commit                  # switch without committing
 ```
 
 Environment variables you can override:
