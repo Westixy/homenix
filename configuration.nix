@@ -251,5 +251,5 @@ in
   # This value determines the NixOS release from which the default
   # settings for stateful data were taken. It should stay at the release
   # version of the first install of this system.
-  system.stateVersion = "25.05";
+  system.stateVersion = "26.05";
 }

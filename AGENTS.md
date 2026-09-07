@@ -16,7 +16,7 @@ any changes so a new task can start fast without re-deriving the environment.
 | **GPU** | NVIDIA GTX 1070 Ti, `legacy_580`, `open = false`, modesetting |
 | **Bootloader** | Limine (UEFI), Gohu 8x14 font, `nineish-dark-gray` wallpaper, Catppuccin theme |
 | **Sudo** | passwordless for `westixy` (`NOPASSWD: ALL`) — already active |
-| **stateVersion** | `"25.05"` (do not change) |
+| **stateVersion** | `"26.05"` (do not change) |
 
 ## Repository layout
 
@@ -128,7 +128,7 @@ sudo -n true
    `warning: Git tree ... is dirty` when there are uncommitted changes).
    `genmgr` commits everything (`git add -A`) at the end of a switch.
 
-6. **`stateVersion` must stay `"25.05"`** — it marks the first-install release
+6. **`stateVersion` must stay `"26.05"`** — it marks the first-install release
    and controls defaults for stateful data. Never bump it casually.
 
 7. **`genmgr.sh` is the source of truth** for the `genmgr` binary; it's baked in
