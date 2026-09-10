@@ -133,7 +133,7 @@ fi
 
 # Compose commit message:
 # Example: "auberge: gen 16 at 2026-09-07 10:43:03 - <optional note>"
-commit_msg="auberge: $current_gen"
+commit_msg="$HOST: $current_gen"
 if [ -n "$NOTE" ]; then
   commit_msg="$commit_msg - $NOTE"
 fi

@@ -1,7 +1,6 @@
 { ... }:
 
 {
-  networking.hostName = "auberge"; # Change this to your preferred hostname.
   networking.networkmanager.enable = true;
 
   # Set your time zone.

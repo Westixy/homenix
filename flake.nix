@@ -1,5 +1,5 @@
 {
-  description = "NixOS configuration for westixy's machine";
+  description = "NixOS configuration for westixy's machines";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
@@ -17,7 +17,12 @@
       nixosConfigurations.auberge = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { inherit inputs; };
-        modules = [ ./configuration.nix ];
+        modules = [ ./systems/auberge/configuration.nix ];
+      };
+      nixosConfigurations.auberge-gpd = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [ ./systems/auberge-gpd/configuration.nix ];
       };
     };
 }
