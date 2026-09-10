@@ -16,6 +16,11 @@
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+
+      initScript = pkgs.writeShellScriptBin "init-from-fresh-install" ''
+        export PATH="${pkgs.lib.makeBinPath (with pkgs; [ git coreutils ])}:''${PATH:-/usr/bin:/bin}"
+        ${builtins.readFile ./init-from-fresh-install.sh}
+      '';
     in
     {
       nixosConfigurations.auberge = nixpkgs.lib.nixosSystem {
@@ -29,9 +34,15 @@
         modules = [ ./systems/auberge-gpd/configuration.nix ];
       };
 
-      packages.${system}.init-from-fresh-install = pkgs.writeShellScriptBin "init-from-fresh-install" ''
-        export PATH="${pkgs.lib.makeBinPath (with pkgs; [ git coreutils ])}:''${PATH:-/usr/bin:/bin}"
-        ${builtins.readFile ./init-from-fresh-install.sh}
-      '';
+      packages.${system} = {
+        inherit initScript;
+        init-from-fresh-install = initScript;
+      };
+
+      apps.${system}.i = {
+        type = "app";
+        program = "${initScript}/bin/init-from-fresh-install";
+        meta.description = "alias for init-from-fresh-install";
+      };
     };
 }
