@@ -10,6 +10,7 @@
     branch = "legacy_580";
     # Kernel modesetting; required for Wayland compositors like COSMIC.
     modesetting.enable = true;
+    powerManagement.enable = true;
   };
 
   # Enable CUPS to print documents.
