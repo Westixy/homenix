@@ -1,9 +1,10 @@
 # homenix
 
-NixOS configuration for **westixy's machine** — a flake-based, declarative
-setup for a gaming + local-AI desktop running the COSMIC environment.
+NixOS configuration for **westixy's machines** — flake-based, declarative
+setups for a gaming + local-AI desktop and a GPD Win 4 2024 handheld, both
+running the COSMIC environment.
 
-> Flake: `nixpkgs` on `nixos-26.05`, host `auberge` (`x86_64-linux`).
+> Flake: `nixpkgs` on `nixos-26.05`, hosts `auberge` + `auberge-gpd` (`x86_64-linux`).
 
 ## What's configured
 
@@ -12,7 +13,7 @@ setup for a gaming + local-AI desktop running the COSMIC environment.
 | **Bootloader** | Limine (UEFI) with a custom [Gohu 8x14](https://fontlibrary.org/en/font/gohufont) bitmap font, the `nineish-dark-gray` wallpaper, and a Catppuccin-themed boot menu |
 | **Desktop** | COSMIC (Wayland-native) with the COSMIC greeter |
 | **Wallpaper** | The `nineish-dark-gray` artwork (same as the boot menu) on both the desktop and lock screen, applied declaratively on login |
-| **GPU** | NVIDIA GeForce GTX 1070 Ti (Pascal), `legacy_580` branch, modesetting for Wayland |
+| **GPU** | `auberge`: NVIDIA GTX 1070 Ti (Pascal, `legacy_580`, modesetting) · `auberge-gpd`: AMD Radeon 780M (`amdgpu`) |
 | **Local AI** | [Ollama](https://ollama.com) with the Vulkan backend (`ollama-vulkan`) and an 8192-token context window |
 | **Gaming** | Steam (plus its 32-bit graphics, hardware, and firewall rules) |
 | **Audio** | PipeWire (with ALSA + Pulse compatibility) via `rtkit` |
@@ -27,14 +28,22 @@ setup for a gaming + local-AI desktop running the COSMIC environment.
 
 ```
 .
-├── flake.nix                # Flake entry: nixosConfigurations.auberge
-├── flake.lock               # Pinned input versions
-├── configuration.nix        # Top-level glue: imports modules + core settings
-├── modules/                 # Per-area config modules (boot, desktop, hardware, …)
-├── hardware-configuration.nix # Generated hardware config (disks, kernel modules)
-├── genmgr.sh                # Build + switch + commit helper (installed as `genmgr`)
-├── gohu-to-limine.py        # Converts the Gohu BDF font to Limine's raw CP437 format
-├── starship.toml            # Starship prompt theme
+├── flake.nix                     # Flake entry: nixosConfigurations + packages
+├── flake.lock                    # Pinned input versions
+├── systems/                      # Per-machine configs (hardware, graphics, hostname)
+│   ├── auberge/                  # Desktop (NVIDIA GTX 1070 Ti)
+│   │   ├── configuration.nix
+│   │   ├── hardware-configuration.nix
+│   │   └── graphics.nix
+│   └── auberge-gpd/              # GPD Win 4 2024 (AMD Radeon 780M)
+│       ├── configuration.nix
+│       ├── hardware-configuration.nix
+│       └── graphics.nix
+├── modules/                      # Shared config modules (boot, desktop, audio, …)
+├── genmgr.sh                     # Build + switch + commit helper (installed as `genmgr`)
+├── init-from-fresh-install.sh    # One-shot bootstrap for a fresh machine
+├── gohu-to-limine.py             # Converts the Gohu BDF font to Limine's raw CP437 format
+├── starship.toml                 # Starship prompt theme
 └── .gitignore
 ```
 
@@ -100,12 +109,23 @@ rather manage the wallpaper interactively from COSMIC Settings, delete the
 
 ## First-time setup
 
-After cloning to `~/nixos` on a fresh machine:
+On a fresh NixOS install, bootstrap the whole configuration in one command:
 
 ```sh
-# Regenerate hardware-configuration.nix if the hardware differs
-sudo nixos-generate-config --show-hardware-config > hardware-configuration.nix
-
-# Build and switch into the configuration
-sudo nixos-rebuild switch --flake ~/nixos#auberge
+nix run github:westixy/homenix#init-from-fresh-install -- auberge
 ```
+
+(replace `auberge` with `auberge-gpd` for the GPD Win 4.)
+
+If flakes aren't enabled yet (no `experimental-features` in `nix.conf`), add
+them inline:
+
+```sh
+nix --extra-experimental-features 'nix-command flakes' run github:westixy/homenix#init-from-fresh-install -- auberge
+```
+
+This will clone the repo to `~/nixos`, copy your generated
+`/etc/nixos/hardware-configuration.nix` into the correct `systems/<hostname>/`
+directory, and run `nixos-rebuild switch --flake ~/nixos#<hostname>`.
+
+After the first switch, use `genmgr` for day-to-day rebuilds (see below).

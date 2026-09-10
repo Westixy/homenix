@@ -13,16 +13,25 @@
 
   outputs =
     { self, nixpkgs, zen-browser, ... }@inputs:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+    in
     {
       nixosConfigurations.auberge = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        inherit system;
         specialArgs = { inherit inputs; };
         modules = [ ./systems/auberge/configuration.nix ];
       };
       nixosConfigurations.auberge-gpd = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        inherit system;
         specialArgs = { inherit inputs; };
         modules = [ ./systems/auberge-gpd/configuration.nix ];
       };
+
+      packages.${system}.init-from-fresh-install = pkgs.writeShellScriptBin "init-from-fresh-install" ''
+        export PATH="${pkgs.lib.makeBinPath (with pkgs; [ git coreutils ])}:''${PATH:-/usr/bin:/bin}"
+        ${builtins.readFile ./init-from-fresh-install.sh}
+      '';
     };
 }
