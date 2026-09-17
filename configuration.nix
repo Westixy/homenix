@@ -8,6 +8,7 @@
 #   modules/hardware.nix   — NVIDIA GPU, CUPS printing
 #   modules/audio.nix      — PipeWire sound
 #   modules/ollama.nix     — Ollama (local LLM server)
+#   modules/docker.nix     — Docker container runtime
 #   modules/gaming.nix     — Steam
 #   modules/shell.nix      — Zsh, Starship, MOTD
 #   modules/users.nix      — user account + sudo
@@ -25,6 +26,7 @@
     ./modules/hardware.nix
     ./modules/audio.nix
     ./modules/ollama.nix
+    ./modules/docker.nix
     ./modules/gaming.nix
     ./modules/shell.nix
     ./modules/users.nix

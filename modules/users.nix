@@ -5,7 +5,7 @@
   users.users.westixy = {
     isNormalUser = true;
     description = "westixy";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.zsh;
   };
 
