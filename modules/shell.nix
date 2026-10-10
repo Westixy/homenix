@@ -41,6 +41,7 @@ in
       ll = "eza -l";
       la = "eza -la";
       lt = "eza --tree";
+      y = "yazi";
     };
 
     interactiveShellInit = ''
@@ -70,7 +71,8 @@ in
   };
 
   # Neovim as the default editor (git commit, sudoedit, edit-command-line, ...).
-  environment.variables = {
+  # sessionVariables exposes it to the whole session (shells and GUI apps alike).
+  environment.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
   };

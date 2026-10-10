@@ -25,6 +25,7 @@ in
     zellij
     eza
     fzf
+    bat
     yazi
     vscodium
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
