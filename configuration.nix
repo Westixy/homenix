@@ -37,6 +37,14 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  # Automatic garbage collection: prune unreachable store paths and old system
+  # generations once a week, keeping everything reachable from the last 7 days.
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
+
   # Allow unfree packages.
   nixpkgs.config.allowUnfree = true;
 

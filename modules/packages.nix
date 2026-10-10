@@ -21,7 +21,11 @@ in
     git
     git-lfs
     discord
+    telegram-desktop
     zellij
+    eza
+    fzf
+    yazi
     vscodium
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
     nh
